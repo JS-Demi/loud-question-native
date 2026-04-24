@@ -1,0 +1,17 @@
+@import "tailwindcss/theme.css" layer(theme);
+@import "tailwindcss/preflight.css" layer(base);
+@import "tailwindcss/utilities.css";
+
+@import "nativewind/theme";
+
+@theme {
+  --color-primary: var(--color-sky-500);
+  --color-accent: var(--color-teal-500);
+  --color-background: var(--color-sky-50);
+  --color-foreground: var(--color-sky-900);
+  --color-card: var(--color-sky-100);
+  --color-destructive: var(--color-red-500);
+  --color-destructive-soft: var(--color-red-100);
+  --color-success: var(--color-green-500);
+  --color-success-soft: var(--color-green-100);
+}
