@@ -1,10 +1,11 @@
 {
   "extends": "expo/tsconfig.base",
   "compilerOptions": {
-    "jsx": "react-jsx",
     "strict": true,
+    "baseUrl": "src",
     "paths": {
       "@/*": ["./*"],
+      "shared/*": ["shared/*"],
     },
   },
   "include": [
@@ -12,6 +13,6 @@
     "**/*.tsx",
     ".expo/types/**/*.ts",
     "expo-env.d.ts",
-    "nativewind-env.d.ts",
+    "./src/uniwind-types.d.ts",
   ],
 }
