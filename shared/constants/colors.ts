@@ -1,0 +1,17 @@
+export const COLORS = {
+  background: '#0D0D0D',
+  surface: '#1A1A2E',
+  primary: '#E040FB',
+  primaryDim: 'rgba(224, 64, 251, 0.15)',
+  primaryBorder: 'rgba(224, 64, 251, 0.2)',
+  primaryGlow: 'rgba(224, 64, 251, 0.4)',
+  secondary: '#00E5FF',
+  secondaryDim: 'rgba(0, 229, 255, 0.1)',
+  danger: '#FF1744',
+  foreground: '#F5F5F5',
+  muted: 'rgba(255, 255, 255, 0.4)',
+  mutedDim: 'rgba(255, 255, 255, 0.08)',
+  easy: '#4CAF50',
+  medium: '#FF9800',
+  hard: '#FF1744',
+} as const
