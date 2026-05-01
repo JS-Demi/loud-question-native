@@ -15,4 +15,8 @@
     "expo-env.d.ts",
     "./src/uniwind-types.d.ts",
   ],
+  "exclude": [
+    "node_modules",
+    "app-example",
+  ],
 }

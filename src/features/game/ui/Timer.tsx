@@ -5,6 +5,7 @@ import { Circle, Svg } from 'react-native-svg'
 import { COLORS } from 'shared/constants/colors'
 import { useTimerCountdown } from '../model/useTimerCountdown'
 
+// SVG and Switch components need raw color strings — COLORS is kept only for those
 const AnimatedCircle = Animated.createAnimatedComponent(Circle)
 
 const SIZE = 140
@@ -37,7 +38,6 @@ export const Timer = ({ duration, isRunning, onComplete }: ITimerProps) => {
   const seconds = timeLeft % 60
   const timeStr = `${minutes}:${seconds.toString().padStart(2, '0')}`
   const isLow = timeLeft <= 15 && isRunning
-  const ringColor = isLow ? COLORS.danger : COLORS.primary
 
   return (
     <View className="items-center justify-center" style={{ width: SIZE, height: SIZE }}>
@@ -54,7 +54,7 @@ export const Timer = ({ duration, isRunning, onComplete }: ITimerProps) => {
           cx={SIZE / 2}
           cy={SIZE / 2}
           r={RADIUS}
-          stroke={ringColor}
+          stroke={isLow ? COLORS.danger : COLORS.primary}
           strokeWidth={STROKE_WIDTH}
           fill="none"
           strokeDasharray={CIRCUMFERENCE}
@@ -64,7 +64,10 @@ export const Timer = ({ duration, isRunning, onComplete }: ITimerProps) => {
           origin={`${SIZE / 2}, ${SIZE / 2}`}
         />
       </Svg>
-      <Text className="font-bold" style={{ color: ringColor, fontSize: 28 }}>
+      <Text
+        className={`font-bold ${isLow ? 'text-danger' : 'text-accent'}`}
+        style={{ fontSize: 28 }}
+      >
         {timeStr}
       </Text>
     </View>

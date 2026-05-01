@@ -1,6 +1,6 @@
-import { Alert, ScrollView, Text, View } from 'react-native'
+import { router } from 'expo-router'
+import { Alert, Pressable, ScrollView, Text, View } from 'react-native'
 import { AddQuestionForm, JsonImportSection, useAddQuestion } from 'features/add-question'
-import { COLORS } from 'shared/constants/colors'
 import { StyledSafeAreaView } from 'shared/styledSafeAreaView'
 
 export const AddQuestionScreen = () => {
@@ -19,9 +19,14 @@ export const AddQuestionScreen = () => {
         showsVerticalScrollIndicator={false}
         keyboardShouldPersistTaps="handled"
       >
-        <Text className="text-xl font-black tracking-wider uppercase mb-6" style={{ color: COLORS.primary }}>
-          Добавить вопрос
-        </Text>
+        <View className="flex-row items-center gap-3 mb-6">
+          <Pressable onPress={() => router.back()}>
+            <Text className="text-muted text-sm">← Назад</Text>
+          </Pressable>
+          <Text className="text-xl font-black tracking-wider uppercase text-accent">
+            Добавить вопрос
+          </Text>
+        </View>
 
         <AddQuestionForm
           text={form.text}

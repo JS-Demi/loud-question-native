@@ -1,28 +1,38 @@
 import * as Haptics from 'expo-haptics'
 import { Button } from 'heroui-native'
 import { Pressable, Text, TextInput, View } from 'react-native'
+import { tv } from 'tailwind-variants'
 import { TDifficulty } from 'entities/question'
-import { COLORS } from 'shared/constants/colors'
 import { DIFFICULTY_LABELS } from 'shared/constants/game'
 import { Card } from 'shared/ui/Card'
 
 const DIFFICULTIES: TDifficulty[] = ['easy', 'medium', 'hard']
 
-const DIFFICULTY_COLOR: Record<TDifficulty, string> = {
-  easy: COLORS.easy,
-  medium: COLORS.medium,
-  hard: COLORS.hard,
-}
+const diffBtn = tv({
+  base: 'flex-1 items-center py-3 rounded-2xl border',
+  variants: {
+    difficulty: { easy: '', medium: '', hard: '' },
+    active: { true: '', false: 'border-border bg-background' },
+  },
+  compoundVariants: [
+    { difficulty: 'easy', active: true, class: 'bg-success/10 border-success' },
+    { difficulty: 'medium', active: true, class: 'bg-warning/10 border-warning' },
+    { difficulty: 'hard', active: true, class: 'bg-danger/10 border-danger' },
+  ],
+})
 
-const inputStyle = {
-  color: COLORS.foreground,
-  backgroundColor: COLORS.background,
-  borderColor: COLORS.mutedDim,
-  borderWidth: 1,
-  borderRadius: 12,
-  padding: 14,
-  fontSize: 15,
-}
+const diffLabel = tv({
+  base: 'font-bold text-sm',
+  variants: {
+    difficulty: { easy: '', medium: '', hard: '' },
+    active: { true: '', false: 'text-muted' },
+  },
+  compoundVariants: [
+    { difficulty: 'easy', active: true, class: 'text-success' },
+    { difficulty: 'medium', active: true, class: 'text-warning' },
+    { difficulty: 'hard', active: true, class: 'text-danger' },
+  ],
+})
 
 interface IAddQuestionFormProps {
   readonly text: string
@@ -44,15 +54,13 @@ export const AddQuestionForm = ({
   onChangeText, onChangeAnswer, onChangeCategory, onChangeDifficulty, onSave,
 }: IAddQuestionFormProps) => (
   <Card>
-    <Text className="text-xs uppercase tracking-widest mb-4" style={{ color: COLORS.muted }}>
-      Новый вопрос
-    </Text>
+    <Text className="text-xs uppercase tracking-widest mb-4 text-muted">Новый вопрос</Text>
 
-    <Text className="font-semibold mb-2" style={{ color: COLORS.foreground }}>Вопрос *</Text>
+    <Text className="font-semibold mb-2 text-foreground">Вопрос *</Text>
     <TextInput
-      style={inputStyle}
+      className="text-foreground bg-background border border-border rounded-xl p-4 text-base"
       placeholder="Введи текст вопроса..."
-      placeholderTextColor={COLORS.muted}
+      placeholderTextColor="rgba(255,255,255,0.35)"
       value={text}
       onChangeText={onChangeText}
       multiline
@@ -60,29 +68,28 @@ export const AddQuestionForm = ({
       textAlignVertical="top"
     />
 
-    <Text className="font-semibold mt-4 mb-2" style={{ color: COLORS.foreground }}>Ответ *</Text>
+    <Text className="font-semibold mt-4 mb-2 text-foreground">Ответ *</Text>
     <TextInput
-      style={inputStyle}
+      className="text-foreground bg-background border border-border rounded-xl p-4 text-base"
       placeholder="Правильный ответ..."
-      placeholderTextColor={COLORS.muted}
+      placeholderTextColor="rgba(255,255,255,0.35)"
       value={answer}
       onChangeText={onChangeAnswer}
     />
 
-    <Text className="font-semibold mt-4 mb-2" style={{ color: COLORS.foreground }}>Категория</Text>
+    <Text className="font-semibold mt-4 mb-2 text-foreground">Категория</Text>
     <TextInput
-      style={inputStyle}
+      className="text-foreground bg-background border border-border rounded-xl p-4 text-base"
       placeholder="Наука, Спорт, История..."
-      placeholderTextColor={COLORS.muted}
+      placeholderTextColor="rgba(255,255,255,0.35)"
       value={category}
       onChangeText={onChangeCategory}
     />
 
-    <Text className="font-semibold mt-4 mb-2" style={{ color: COLORS.foreground }}>Сложность</Text>
+    <Text className="font-semibold mt-4 mb-2 text-foreground">Сложность</Text>
     <View className="flex-row gap-3">
       {DIFFICULTIES.map((d) => {
-        const isActive = difficulty === d
-        const color = DIFFICULTY_COLOR[d]
+        const active = difficulty === d
         return (
           <Pressable
             key={d}
@@ -90,26 +97,15 @@ export const AddQuestionForm = ({
               Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light)
               onChangeDifficulty(d)
             }}
-            className="flex-1 items-center py-3 rounded-2xl border"
-            style={{
-              backgroundColor: isActive ? `${color}20` : COLORS.background,
-              borderColor: isActive ? color : COLORS.mutedDim,
-            }}
+            className={diffBtn({ difficulty: d, active })}
           >
-            <Text className="font-bold text-sm" style={{ color: isActive ? color : COLORS.muted }}>
-              {DIFFICULTY_LABELS[d]}
-            </Text>
+            <Text className={diffLabel({ difficulty: d, active })}>{DIFFICULTY_LABELS[d]}</Text>
           </Pressable>
         )
       })}
     </View>
 
-    <Button
-      className="mt-5"
-      variant="primary"
-      isDisabled={!isFormValid || isSaving}
-      onPress={onSave}
-    >
+    <Button className="mt-5" variant="primary" isDisabled={!isFormValid || isSaving} onPress={onSave}>
       {isSaving ? 'Сохранение...' : 'Сохранить вопрос'}
     </Button>
   </Card>

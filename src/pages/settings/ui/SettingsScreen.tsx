@@ -1,9 +1,22 @@
-import { ScrollView, Text, View } from 'react-native'
+import { router } from 'expo-router'
+import { Pressable, ScrollView, Text, View } from 'react-native'
+import { tv } from 'tailwind-variants'
 import { useQuestionsStore } from 'entities/question'
 import { HostModeToggle, TimeSelector, useSettingsStore } from 'features/settings'
-import { COLORS } from 'shared/constants/colors'
 import { Card } from 'shared/ui/Card'
 import { StyledSafeAreaView } from 'shared/styledSafeAreaView'
+
+const statCount = tv({
+  base: 'font-bold',
+  variants: {
+    kind: {
+      total: 'text-accent',
+      easy: 'text-success',
+      medium: 'text-warning',
+      hard: 'text-danger',
+    },
+  },
+})
 
 export const SettingsScreen = () => {
   const timePerQuestion = useSettingsStore((s) => s.timePerQuestion)
@@ -19,12 +32,17 @@ export const SettingsScreen = () => {
         contentContainerStyle={{ padding: 16, paddingBottom: 40 }}
         showsVerticalScrollIndicator={false}
       >
-        <Text className="text-xl font-black tracking-wider uppercase mb-6" style={{ color: COLORS.primary }}>
-          Настройки
-        </Text>
+        <View className="flex-row items-center gap-3 mb-6">
+          <Pressable onPress={() => router.back()}>
+            <Text className="text-muted text-sm">← Назад</Text>
+          </Pressable>
+          <Text className="text-xl font-black tracking-wider uppercase text-accent">
+            Настройки
+          </Text>
+        </View>
 
         <Card className="mb-4">
-          <Text className="text-xs uppercase tracking-widest mb-4" style={{ color: COLORS.muted }}>
+          <Text className="text-xs uppercase tracking-widest mb-4 text-muted">
             Время на вопрос
           </Text>
           <TimeSelector value={timePerQuestion} onChange={setTimePerQuestion} />
@@ -33,20 +51,31 @@ export const SettingsScreen = () => {
         <HostModeToggle value={hostMode} onChange={setHostMode} />
 
         <Card className="mt-4">
-          <Text className="text-xs uppercase tracking-widest mb-3" style={{ color: COLORS.muted }}>
+          <Text className="text-xs uppercase tracking-widest mb-3 text-muted">
             Статистика базы
           </Text>
-          {([
-            ['Всего вопросов', questions.length, COLORS.primary],
-            ['Лёгких', questions.filter((q) => q.difficulty === 'easy').length, COLORS.easy],
-            ['Средних', questions.filter((q) => q.difficulty === 'medium').length, COLORS.medium],
-            ['Сложных', questions.filter((q) => q.difficulty === 'hard').length, COLORS.hard],
-          ] as [string, number, string][]).map(([label, count, color], i) => (
-            <View key={label} className={`flex-row justify-between${i > 0 ? ' mt-2' : ''}`}>
-              <Text style={{ color: COLORS.foreground }}>{label}</Text>
-              <Text className="font-bold" style={{ color }}>{count}</Text>
-            </View>
-          ))}
+          <View className="flex-row justify-between">
+            <Text className="text-foreground">Всего вопросов</Text>
+            <Text className={statCount({ kind: 'total' })}>{questions.length}</Text>
+          </View>
+          <View className="flex-row justify-between mt-2">
+            <Text className="text-foreground">Лёгких</Text>
+            <Text className={statCount({ kind: 'easy' })}>
+              {questions.filter((q) => q.difficulty === 'easy').length}
+            </Text>
+          </View>
+          <View className="flex-row justify-between mt-2">
+            <Text className="text-foreground">Средних</Text>
+            <Text className={statCount({ kind: 'medium' })}>
+              {questions.filter((q) => q.difficulty === 'medium').length}
+            </Text>
+          </View>
+          <View className="flex-row justify-between mt-2">
+            <Text className="text-foreground">Сложных</Text>
+            <Text className={statCount({ kind: 'hard' })}>
+              {questions.filter((q) => q.difficulty === 'hard').length}
+            </Text>
+          </View>
         </Card>
       </ScrollView>
     </StyledSafeAreaView>

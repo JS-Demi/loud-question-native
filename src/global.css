@@ -4,20 +4,53 @@
 
 @source '../node_modules/heroui-native/lib';
 
+/*
+  Override heroui-native CSS variables with our neon party dark theme.
+  heroui maps these vars to Tailwind color tokens via @theme inline static,
+  so bg-background, text-foreground, bg-accent, text-muted etc. all work via className.
+  variant="primary" on Button uses bg-accent → neon purple.
+*/
+:root {
+  --background: #0D0D0D;
+  --foreground: #F5F5F5;
+
+  --surface: #1A1A2E;
+  --surface-foreground: #F5F5F5;
+  --surface-secondary: #1E1E3A;
+  --surface-secondary-foreground: #F5F5F5;
+
+  --overlay: #1A1A2E;
+  --overlay-foreground: #F5F5F5;
+
+  --muted: rgba(255, 255, 255, 0.35);
+
+  /* accent = our primary neon purple → used by variant="primary" button */
+  --accent: #E040FB;
+  --accent-foreground: #FFFFFF;
+
+  --default: #1A1A2E;
+  --default-foreground: #F5F5F5;
+
+  --border: rgba(255, 255, 255, 0.08);
+  --separator: rgba(255, 255, 255, 0.12);
+
+  --field-background: #1A1A2E;
+  --field-foreground: #F5F5F5;
+  --field-placeholder: rgba(255, 255, 255, 0.35);
+  --field-border: transparent;
+
+  /* heroui success/warning/danger → we reuse for difficulty easy/medium/hard */
+  --success: #4CAF50;
+  --success-foreground: #FFFFFF;
+  --warning: #FF9800;
+  --warning-foreground: #000000;
+  --danger: #FF1744;
+  --danger-foreground: #FFFFFF;
+}
+
 @theme {
   --spacing-global-px: calc(var(--spacing) * 2);
 
-  --color-background: #0D0D0D;
-  --color-surface: #1A1A2E;
-  --color-primary: #E040FB;
-  --color-primary-dim: rgba(224, 64, 251, 0.15);
-  --color-secondary: #00E5FF;
-  --color-secondary-dim: rgba(0, 229, 255, 0.1);
-  --color-danger: #FF1744;
-  --color-foreground: #F5F5F5;
-  --color-muted: rgba(255, 255, 255, 0.4);
-  --color-muted-dim: rgba(255, 255, 255, 0.08);
-  --color-easy: #4CAF50;
-  --color-medium: #FF9800;
-  --color-hard: #FF1744;
+  /* Neon secondary (cyan) — not in heroui, added as custom token */
+  --color-neon-secondary: #00E5FF;
 }
